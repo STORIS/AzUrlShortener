@@ -4,9 +4,10 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 env:
-  AZURE_FUNCTIONAPP_NAME: "Dev-STORIS-URL-Shortener"
+  AZURE_FUNCTIONAPP_NAME: "Dev-STORIS-URL-Redirect"
   AZURE_FUNCTIONAPP_PACKAGE_PATH: "."
   DOTNET_VERSION: "6.0.x"
 
