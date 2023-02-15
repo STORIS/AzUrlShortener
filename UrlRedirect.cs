@@ -22,7 +22,7 @@ namespace Cloud5mins.Function
 
         [Function("UrlRedirect")]
         public async Task<HttpResponseData> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "urlredirect/{shortUrl}")]
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "urlredirect/{shortUrl}")]
             HttpRequestData req,
             string shortUrl,
             ExecutionContext context)
