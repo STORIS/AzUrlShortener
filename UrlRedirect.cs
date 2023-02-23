@@ -11,7 +11,6 @@ namespace Cloud5mins.Function
 {
     public class UrlRedirect
     {
-        // private readonly ILogger _logger;
         private NLogWrapper logger;
         private readonly ShortenerSettings _shortenerSettings;
 
