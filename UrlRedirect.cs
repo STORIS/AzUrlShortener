@@ -11,12 +11,13 @@ namespace Cloud5mins.Function
 {
     public class UrlRedirect
     {
-        private readonly ILogger _logger;
+        // private readonly ILogger _logger;
+        private NLogWrapper logger;
         private readonly ShortenerSettings _shortenerSettings;
 
         public UrlRedirect(ILoggerFactory loggerFactory, ShortenerSettings settings)
         {
-            _logger = loggerFactory.CreateLogger<UrlRedirect>();
+            logger = new NLogWrapper(LoggerType.UrlRedirect, settings);
             _shortenerSettings = settings;
         }
 
@@ -41,16 +42,20 @@ namespace Cloud5mins.Function
 
                 if (newUrl != null)
                 {
-                    _logger.LogInformation($"Found it: {newUrl.Url}");
+                    logger.Log(NLog.LogLevel.Info, "Redirect url found for short url {url.shortUrl} : {url.redirectUrl}", shortUrl, newUrl.Url);
                     newUrl.Clicks++;
                     await stgHelper.SaveClickStatsEntity(new ClickStatsEntity(newUrl.RowKey));
                     await stgHelper.SaveShortUrlEntity(newUrl);
                     redirectUrl = WebUtility.UrlDecode(newUrl.ActiveUrl);
                 }
+                else
+                {
+                    logger.Log(NLog.LogLevel.Warn, "Redirect url not found for short url : {url.shortUrl}", shortUrl);
+                }
             }
             else
             {
-                _logger.LogInformation("Bad Link, resorting to fallback.");
+                logger.Log(NLog.LogLevel.Error, "Bad Link, resorting to fallback.");
             }
 
             var res = req.CreateResponse(HttpStatusCode.Redirect);
