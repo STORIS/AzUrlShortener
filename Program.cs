@@ -1,4 +1,6 @@
 using System.Threading.Tasks;
+using System;
+using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Azure.Functions.Worker.Configuration;
@@ -22,6 +24,7 @@ namespace Cloud5mins.AdminApi
                     {
                         var configuration = context.Configuration;
                         shortenerSettings = new ShortenerSettings();
+                        shortenerSettings.version = typeof(Program).Assembly.GetName().Version.ToString();
                         configuration.Bind(shortenerSettings);
                         return configuration;
                     });
